@@ -37,11 +37,9 @@ try {
     }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $ins = $pdo->prepare('INSERT INTO users (name, email, phone, password, role) VALUES (:name, :email, :phone, :password, "user")');
-    $ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash]);
+$ins = $pdo->prepare('INSERT INTO users (name, email, phone, password, role) VALUES (:name, :email, :phone, :password, :role)');    $ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash]);
 
-    echo json_encode(['success' => true, 'message' => 'Account created']);
-
+$ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash, ':role' => 'user']);
 } catch (Throwable $e) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
