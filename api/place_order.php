@@ -86,8 +86,7 @@ try {
     $total = $subtotal + $delivery_fee;
 
     $pdo->beginTransaction();
-    $ins = $pdo->prepare('INSERT INTO orders (user_id, customer_name, phone, street, city, instructions, payment_method, subtotal, delivery_fee, total, status) VALUES (:user_id,:customer_name,:phone,:street,:city,:instructions,:payment_method,:subtotal,:delivery_fee,:total, "pending")');
-    $ins->execute([
+$ins = $pdo->prepare('INSERT INTO orders (user_id, customer_name, phone, street, city, instructions, payment_method, subtotal, delivery_fee, total, status) VALUES (:user_id,:customer_name,:phone,:street,:city,:instructions,:payment_method,:subtotal,:delivery_fee,:total, \'pending\')');    $ins->execute([
         ':user_id' => $sessionUser['id'], ':customer_name' => $customer_name, ':phone' => $phone,
         ':street' => $street, ':city' => $city, ':instructions' => $instructions, ':payment_method' => $payment_method,
         ':subtotal' => $subtotal, ':delivery_fee' => $delivery_fee, ':total' => $total
