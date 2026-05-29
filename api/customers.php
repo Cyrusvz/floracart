@@ -21,8 +21,7 @@ try {
     $pdo = require __DIR__ . '/../config/db.php';
     if (!$pdo) throw new Exception('Database connection failed');
 
-    $stmt = $pdo->prepare('SELECT id, name, email, phone, role, created_at FROM users WHERE role = "user" ORDER BY created_at DESC');
-    $stmt->execute();
+$stmt = $pdo->prepare("SELECT id, name, email, phone, role, created_at FROM users WHERE role = 'user' ORDER BY created_at DESC");    $stmt->execute();
     $users = $stmt->fetchAll();
     echo json_encode(['success'=>true,'customers'=>$users]);
 
