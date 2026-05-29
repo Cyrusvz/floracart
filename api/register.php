@@ -1,6 +1,5 @@
 <?php
 // api/register.php
-// Allow CORS and support credentialed requests when an Origin header is present
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if ($origin) {
     header("Access-Control-Allow-Origin: $origin");
@@ -29,7 +28,6 @@ try {
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new Exception('Invalid email');
 
-    // Check exists
     $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
     $stmt->execute([':email' => $email]);
     if ($stmt->fetch()) {
@@ -37,9 +35,10 @@ try {
     }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
-$ins = $pdo->prepare('INSERT INTO users (name, email, phone, password, role) VALUES (:name, :email, :phone, :password, :role)');    $ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash]);
+    $ins = $pdo->prepare('INSERT INTO users (name, email, phone, password, role) VALUES (:name, :email, :phone, :password, :role)');
+    $ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash, ':role' => 'user']);
 
-$ins->execute([':name' => $name, ':email' => $email, ':phone' => $phone, ':password' => $hash, ':role' => 'user']);
+    echo json_encode(['success' => true, 'message' => 'Account created']);
 } catch (Throwable $e) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
