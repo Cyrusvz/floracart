@@ -707,7 +707,7 @@
         return true;
       } catch (err) {
         showToast('Please login as admin', 'error');
-        setTimeout(() => { window.location.href = 'Login.html'; }, 900);
+        setTimeout(() => { window.location.href = 'login.html'; }, 900);
         return false;
       }
     }
@@ -717,7 +717,7 @@
       try { await apiFetch('api/logout.php', { method: 'POST' }); } catch(_) {}
       sessionStorage.removeItem('floraCurrentUser');
       showToast('Logged out successfully!', 'success');
-      setTimeout(() => { window.location.href = 'Login.html'; }, 900);
+      setTimeout(() => { window.location.href = 'login.html'; }, 900);
     }
 
     // ========== TOAST ==========

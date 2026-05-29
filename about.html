@@ -830,7 +830,7 @@
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.remove();
-      window.location.href = 'Login.html';
+      window.location.href = 'login.html';
     }, 1500);
   }
 

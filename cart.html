@@ -492,7 +492,7 @@
   async function handleLogout() {
     try { await fetch('api/logout.php', { method: 'POST' }); } catch(_) {}
     sessionStorage.removeItem('floraCurrentUser');
-    window.location.href = 'Login.html';
+    window.location.href = 'login.html';
   }
 
   function toggleSelectAll(cb) {
@@ -670,7 +670,7 @@
           body: JSON.stringify({ cart: selected, customer_name: addr.name, phone: addr.phone, street: addr.street, city: addr.city, instructions: addr.note, payment_method: payLabels[payment], delivery_fee: 50 })
         });
         const j = await res.json();
-        if (res.status === 401) { alert('Please login to place an order.'); window.location.href = 'Login.html'; return; }
+        if (res.status === 401) { alert('Please login to place an order.'); window.location.href = 'login.html'; return; }
         if (!j.success) throw new Error(j.message || 'Order failed');
 
         // Remove checked items only

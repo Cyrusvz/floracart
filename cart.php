@@ -689,7 +689,7 @@
   }
   function handleLogout() {
     localStorage.removeItem('floraCurrentUser');
-    window.location.href = 'Login.html';
+    window.location.href = 'login.html';
   }
   function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
