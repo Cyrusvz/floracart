@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Flora Cart – Login & Register</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -26,22 +26,28 @@
     body {
       font-family: 'DM Sans', sans-serif;
       background: #fce8e0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 16px;
     }
 
+    /* ── CARD: desktop two-column, mobile single-column ── */
     .card {
       display: grid;
       grid-template-columns: 380px 460px;
-      height: 620px;
+      max-height: 620px;
       border-radius: 18px;
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(80,40,30,0.18);
+      width: 100%;
+      max-width: 840px;
     }
 
-    /* LEFT SIDE */
+    /* ═══════════════════════════════
+       LEFT SIDE (photo / brand)
+    ═══════════════════════════════ */
     .photo-side {
       position: relative;
       background:
@@ -76,13 +82,16 @@
     .brand-heart { font-size: 12px; color: #5a7260; }
     .brand-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #5a7260; text-align: center; line-height: 1.5; }
 
-    /* RIGHT SIDE */
+    /* ═══════════════════════════════
+       RIGHT SIDE (form)
+    ═══════════════════════════════ */
     .form-side {
       background: var(--white);
       display: flex;
       flex-direction: column;
       padding: 32px 44px 28px;
       overflow-y: auto;
+      max-height: 620px;
     }
 
     .tabs { display: flex; justify-content: center; margin-bottom: 20px; gap: 36px; }
@@ -105,11 +114,6 @@
     .field input:focus { border-color: var(--btn-green); box-shadow: 0 0 0 3px rgba(106,154,116,0.1); }
     .field input.err  { border-color: var(--error); }
     .field input.good { border-color: var(--success); }
-
-    .field.password-field input::-ms-reveal,
-    .field.password-field input::-ms-clear { display: none !important; }
-    input[type="password"]::-ms-reveal,
-    input[type="password"]::-webkit-credentials-auto-fill-button { display: none !important; }
 
     .field.password-field input { padding: 11px 38px 11px 16px; }
 
@@ -134,15 +138,8 @@
     .strength-label.good   { color:#f1c40f; }
     .strength-label.strong { color:var(--success); font-weight:600; }
 
-    /* PASSWORD REQUIREMENTS CHECKLIST */
-    .pw-reqs {
-      background: #f6faf7;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-top: 6px;
-      margin-bottom: 4px;
-    }
+    /* PASSWORD REQUIREMENTS */
+    .pw-reqs { background: #f6faf7; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-top: 6px; margin-bottom: 4px; }
     .pw-reqs-title { font-size: 10px; font-weight: 600; color: var(--bark-mid); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
     .pw-req { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #aabcae; margin-bottom: 3px; transition: color 0.2s; }
     .pw-req:last-child { margin-bottom: 0; }
@@ -175,7 +172,7 @@
     .switch-link a:hover { color: var(--btn-hover); text-decoration: underline; }
 
     /* Toast */
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(50px); background: #2a3d2e; color:#fff; padding: 10px 22px; border-radius: 8px; font-size: 12px; font-weight: 500; opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.4,0.64,1); z-index: 9999; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(50px); background: #2a3d2e; color:#fff; padding: 10px 22px; border-radius: 8px; font-size: 12px; font-weight: 500; opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.4,0.64,1); z-index: 9999; white-space: nowrap; }
     .toast.error-toast { background: var(--error); }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -188,13 +185,95 @@
     .confirm-box p  { font-size:13px; color:var(--bark-mid); line-height:1.6; margin-bottom:24px; }
     .confirm-box button { background:var(--btn-green); color:#fff; border:none; padding:11px 32px; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform: uppercase; cursor:pointer; }
     .confirm-box button:hover { background:var(--btn-hover); }
+
+    /* ═══════════════════════════════
+       MOBILE BRAND HEADER
+       (only shows on small screens)
+    ═══════════════════════════════ */
+    .mobile-brand {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 24px 20px 16px;
+      background:
+        radial-gradient(ellipse at 30% 100%, rgba(245,180,160,0.7) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 0%, rgba(200,225,200,0.5) 0%, transparent 45%),
+        linear-gradient(160deg, #fdeee8 0%, #f5d8cc 50%, #ecc8b8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .mobile-brand .brand-icon { width: 40px; height: 40px; border: 1.5px solid rgba(42,61,46,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.6); font-size: 18px; }
+    .mobile-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #2a3d2e; }
+    .mobile-brand .brand-hr { width: 22px; height: 1px; background: rgba(42,61,46,0.3); }
+    .mobile-brand .brand-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; color: #5a7260; }
+    /* tiny flower row in mobile header */
+    .mobile-flowers { display: flex; gap: 4px; font-size: 22px; margin-top: 2px; line-height: 1; }
+
+    /* ═══════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ═══════════════════════════════ */
+    @media (max-width: 700px) {
+      body {
+        padding: 0;
+        align-items: flex-start;
+        background: #fff;
+      }
+
+      .card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        max-height: none;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        max-width: 100%;
+      }
+
+      /* Hide desktop left panel, show mobile brand header instead */
+      .photo-side { display: none; }
+      .mobile-brand { display: flex; }
+
+      .form-side {
+        padding: 20px 24px 32px;
+        max-height: none;
+        overflow-y: visible;
+      }
+
+      .tabs { margin-bottom: 16px; gap: 28px; }
+      .form-heading { font-size: 22px; }
+
+      .field input { font-size: 16px; /* prevents iOS zoom */ padding: 13px 38px 13px 38px; }
+      .field.password-field input { padding: 13px 38px 13px 16px; }
+
+      .submit-btn { padding: 15px; font-size: 12px; }
+    }
+
+    @media (min-width: 701px) and (max-width: 900px) {
+      .card {
+        grid-template-columns: 260px 1fr;
+      }
+      .fc1 { font-size: 80px; }
+      .fc3 { font-size: 70px; }
+      .fc5 { font-size: 65px; }
+    }
   </style>
 </head>
 <body>
 
 <div class="card">
 
-  <!-- LEFT -->
+  <!-- MOBILE BRAND HEADER (shown only on small screens) -->
+  <div class="mobile-brand">
+    <div class="brand-icon">🌿</div>
+    <div class="brand-name">Flora Cart</div>
+    <div class="brand-hr"></div>
+    <div class="brand-sub">Fresh blooms, delivered with love.</div>
+    <div class="mobile-flowers">🌸 🌹 🌷 💐 🌼</div>
+  </div>
+
+  <!-- LEFT (desktop only) -->
   <div class="photo-side">
     <div class="sprig sprig-tl">🌿</div>
     <div class="sprig sprig-tr">🌿</div>
@@ -266,7 +345,6 @@
           </div>
         </div>
 
-        <!-- PASSWORD REQUIREMENTS -->
         <div class="pw-reqs">
           <div class="pw-reqs-title">Password must include:</div>
           <div class="pw-req" id="req-len"><div class="req-dot"></div> At least 8 characters</div>
@@ -342,7 +420,6 @@
 const API_BASE = 'api';
 const apiFetch = (url, opts = {}) => { opts.credentials = opts.credentials || 'include'; return fetch(url, opts); };
 
-// ── TAB SWITCH ──
 function switchTab(tab) {
   const isLogin = tab === 'login';
   document.getElementById('tabLogin').classList.toggle('active', isLogin);
@@ -353,7 +430,6 @@ function switchTab(tab) {
   document.querySelectorAll('input').forEach(el => el.classList.remove('err','good'));
 }
 
-// ── EYE TOGGLE ──
 const EYE_OPEN   = `<svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const EYE_CLOSED = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0112 19C5 19 1 12 1 12a18.1 18.1 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 function toggleEye(id, btn) {
@@ -363,7 +439,6 @@ function toggleEye(id, btn) {
   btn.innerHTML = isHidden ? EYE_OPEN : EYE_CLOSED;
 }
 
-// ── PASSWORD STRENGTH + REQUIREMENTS ──
 let passwordScore = 0;
 
 function onPasswordInput(val) {
@@ -373,21 +448,14 @@ function onPasswordInput(val) {
     num:   /[0-9]/.test(val),
     sym:   /[^A-Za-z0-9]/.test(val),
   };
-
-  // Update checklist
   setReq('req-len',   reqs.len);
   setReq('req-upper', reqs.upper);
   setReq('req-num',   reqs.num);
   setReq('req-sym',   reqs.sym);
-
-  // Score = number of met requirements
   passwordScore = Object.values(reqs).filter(Boolean).length;
-
-  // Update bar
   const segs = [1,2,3,4].map(n => document.getElementById('st'+n));
   const lbl  = document.getElementById('stLabel');
   segs.forEach(s => s.className = 'strength-seg');
-
   const classes = ['','weak','fair','good','strong'];
   const labels  = ['','Too weak','Fair','Good','Strong ✓'];
   if (val.length > 0) {
@@ -398,7 +466,6 @@ function onPasswordInput(val) {
     lbl.textContent = '';
     lbl.className   = 'strength-label';
   }
-
   updateCreateBtn();
 }
 
@@ -409,7 +476,6 @@ function setReq(id, met) {
 }
 
 function updateCreateBtn() {
-  // Enable only when password is strong (score 4) AND confirm matches
   const pass    = document.getElementById('sPass').value;
   const confirm = document.getElementById('sConfirm').value;
   const isStrong = passwordScore === 4;
@@ -417,17 +483,14 @@ function updateCreateBtn() {
   document.getElementById('createBtn').disabled = !(isStrong && matches);
 }
 
-// Also watch confirm field
 document.getElementById('sConfirm').addEventListener('input', updateCreateBtn);
 
-// ── HELPERS ──
 function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; el.classList.add('show'); }
 function clearErr(id)      { const el = document.getElementById(id); el.style.display = 'none'; el.classList.remove('show'); }
 function mark(id, ok)      { const el = document.getElementById(id); if (!el) return; el.classList.toggle('err', !ok); el.classList.toggle('good', ok); }
 const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 const validPhone  = v => /^(\+63|0)9\d{9}$/.test(v.replace(/[\s\-()]/g,''));
 
-// ── SIGN UP ──
 async function handleSignup(e) {
   e.preventDefault();
   let ok = true;
@@ -444,13 +507,7 @@ async function handleSignup(e) {
   else if (!validEmail(email)) { showErr('sEmailErr','Enter a valid email.'); mark('sEmail',false); ok=false; } else mark('sEmail',true);
   if (!phone) { showErr('sPhoneErr','Mobile number is required.'); mark('sPhone',false); ok=false; }
   else if (!validPhone(phone)) { showErr('sPhoneErr','Enter a valid PH number: 09XXXXXXXXX.'); mark('sPhone',false); ok=false; } else mark('sPhone',true);
-
-  // Strong password enforcement
-  if (passwordScore < 4) {
-    showErr('sPassErr','Please create a strong password that meets all requirements.');
-    mark('sPass',false); ok=false;
-  } else mark('sPass',true);
-
+  if (passwordScore < 4) { showErr('sPassErr','Please create a strong password that meets all requirements.'); mark('sPass',false); ok=false; } else mark('sPass',true);
   if (!confirm) { showErr('sConfirmErr','Please confirm your password.'); mark('sConfirm',false); ok=false; }
   else if (pass !== confirm) { showErr('sConfirmErr','Passwords do not match.'); mark('sConfirm',false); ok=false; } else mark('sConfirm',true);
 
@@ -463,16 +520,13 @@ async function handleSignup(e) {
     });
     const j = await res.json();
     if (j.success) {
-      // Reset form
       ['sName','sEmail','sPhone','sPass','sConfirm'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('stLabel').textContent = '';
       [1,2,3,4].forEach(n => document.getElementById('st'+n).className='strength-seg');
       ['req-len','req-upper','req-num','req-sym'].forEach(id => document.getElementById(id).classList.remove('met'));
       passwordScore = 0;
       document.getElementById('createBtn').disabled = true;
-
       showConfirm('🌷','Account Created!', `Welcome, ${name.split(' ')[0]}! Your account has been created. Please login to continue.`);
-      // After dismissing, switch to login tab
       document.getElementById('confirmOverlay').dataset.afterClose = 'login';
     } else {
       showToast(j.message || 'Registration failed.', 'error-toast');
@@ -482,7 +536,6 @@ async function handleSignup(e) {
   }
 }
 
-// ── LOGIN ──
 async function handleLogin(e) {
   e.preventDefault();
   let ok = true;
@@ -506,7 +559,6 @@ async function handleLogin(e) {
       sessionStorage.setItem('floraCurrentUser', JSON.stringify(j.user));
       if (document.getElementById('lRemember').checked) localStorage.setItem('rememberedEmail', email);
       else localStorage.removeItem('rememberedEmail');
-
       if (j.user.role === 'admin') {
         showConfirm('👑','Admin Access Granted!', `Welcome back, ${j.user.name}! Redirecting to Admin Dashboard...`);
         setTimeout(() => { closeConfirm(); window.location.href = 'admin.html'; }, 1000);
@@ -524,7 +576,6 @@ async function handleLogin(e) {
   }
 }
 
-// ── MODAL / TOAST ──
 function showConfirm(icon, title, msg) {
   document.getElementById('cIcon').textContent  = icon;
   document.getElementById('cTitle').textContent = title;
@@ -549,7 +600,6 @@ function showToast(msg, type='') {
   tTimer = setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-// Restore remembered email
 const rem = localStorage.getItem('rememberedEmail');
 if (rem) { document.getElementById('lEmail').value = rem; document.getElementById('lRemember').checked = true; }
 </script>
