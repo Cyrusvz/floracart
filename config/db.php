@@ -1,26 +1,20 @@
 <?php
 // config/db.php
-// Returns $pdo connected to floracart_db
 declare(strict_types=1);
 try {
-    // UPDATED FOR AIVEN CLOUD DATABASE CONNECTION
-    $host = 'mysql-568ce49-floracart.l.aivencloud.com'; 
-    $db   = 'defaultdb';                        
-    $user = 'avnadmin';                         
-    $pass = 'AVNS_W5Pz5lAidf1EU04-9iT';         
-    $port = '26778';                            
-    
-    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+    $dsn = 'pgsql:host=dpg-d8cnf5hkh4rs73c196g0-a.oregon-postgres.render.com;port=5432;dbname=floracart_db';
+    $user = 'floracart_db_user';
+    $pass = 'bzUjTfDPsWqqBdnKfw4KQchjIRXE1qxE';
+
     $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../ca.pem',
+        PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
     $pdo = new PDO($dsn, $user, $pass, $options);
 
-    // Ensure default admin exists (seed). Do not expose errors to frontend.
+    // Seed default admin if not exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
     $stmt->execute([':email' => 'admin@floracart.com']);
     $admin = $stmt->fetch();
@@ -31,8 +25,7 @@ try {
     }
 
 } catch (Throwable $e) {
-    // TEMPORARY: Stop the site and print the exact Render error to the screen
-    die("<div style='background: white; color: red; padding: 20px; text-align: center; font-size: 18px; margin-top: 50px; z-index: 9999; position: relative;'><b>LIVE SERVER ERROR:</b> " . $e->getMessage() . "</div>");
+    die("<div style='background:white;color:red;padding:20px;text-align:center;font-size:18px;margin-top:50px;'><b>DB ERROR:</b> " . $e->getMessage() . "</div>");
 }
 
 return $pdo;
