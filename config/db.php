@@ -3,17 +3,20 @@
 // Returns $pdo connected to floracart_db
 declare(strict_types=1);
 try {
-    // UPDATED FOR LOCAL XAMPP DEVELOPMENT
-    $host = 'localhost';             // Localhost for XAMPP
-    $db   = 'floracart_db';          // The exact name of your database in local phpMyAdmin
-    $user = 'root';                  // Default XAMPP username
-    $pass = '';                      // Default XAMPP password (must be empty!)
+    // UPDATED FOR AIVEN CLOUD DATABASE CONNECTION
+    $host = 'mysql-568ce49-floracart.l.aivencloud.com'; 
+    $db   = 'defaultdb';                        // Aiven default database name
+    $user = 'avnadmin';                         // Aiven username
+    $pass = 'AVNS_W5Pz5lAidf1EU04-9iT';         // <-- PASTE YOUR EXACT AIVEN PASSWORD HERE!
+    $port = '26778';                            // Aiven port number
     
-    $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
+        // Crucial for Aiven: Tells PDO to use the secure certificate we put in the root folder
+        PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../ca.pem',
     ];
 
     $pdo = new PDO($dsn, $user, $pass, $options);
