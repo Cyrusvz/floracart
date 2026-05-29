@@ -31,10 +31,8 @@ try {
     }
 
 } catch (Throwable $e) {
-    $pdo = null;
-    
-    // THIS LINE IS NOW ACTIVE to print the real error:
-   // echo "\n!!! REAL ERROR: " . $e->getMessage() . " !!!\n\n"; 
+    // TEMPORARY: Stop the site and print the exact Render error to the screen
+    die("<div style='background: white; color: red; padding: 20px; text-align: center; font-size: 18px; margin-top: 50px; z-index: 9999; position: relative;'><b>LIVE SERVER ERROR:</b> " . $e->getMessage() . "</div>");
 }
 
 return $pdo;
