@@ -871,7 +871,7 @@
       })();
     }
 
-    // ========== ORDER FUNCTIONS ==========
+   // ========== ORDER FUNCTIONS ==========
     async function renderOrders() {
       const container = document.getElementById('ordersBody');
       const recentContainer = document.getElementById('recentOrdersBody');
@@ -890,8 +890,11 @@
             <td>₱${order.total}</td>
             <td>
               <div class="action-group">
-                <button class="btn" onclick="updateOrderStatus(${order.id}, 'completed')">Complete</button>
-                <button class="btn btn-danger" onclick="updateOrderStatus(${order.id}, 'cancelled')">Cancel</button>
+                ${order.status !== 'completed' ? `
+                  <button class="btn" onclick="updateOrderStatus(${order.id}, 'completed')">Complete</button>
+                  <button class="btn btn-danger" onclick="updateOrderStatus(${order.id}, 'cancelled')">Cancel</button>
+                ` : ''}
+                ${order.status === 'completed' ? `<button class="btn btn-danger" style="background:#c0392b;color:white;" onclick="deleteOrder(${order.id})">Remove</button>` : ''}
               </div>
             </td>
           </tr>
